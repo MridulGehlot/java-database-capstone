@@ -1,0 +1,54 @@
+name: Lint Frontend
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install linters
+        run: npm install -g htmlhint stylelint stylelint-config-standard eslint@8
+
+      - name: Create lint configs
+        run: |
+          cat > .stylelintrc.json <<'EOF'
+          {
+            "extends": "stylelint-config-standard"
+          }
+          EOF
+
+          cat > .eslintrc.json <<'EOF'
+          {
+            "env": {
+              "browser": true,
+              "es2021": true,
+              "node": true
+            },
+            "extends": "eslint:recommended",
+            "parserOptions": {
+              "ecmaVersion": 12,
+              "sourceType": "module"
+            },
+            "rules": {}
+          }
+          EOF
+
+      - name: Lint HTML
+        run: htmlhint "app/src/main/resources/static/**/*.html" || true
+
+      - name: Lint CSS
+        run: stylelint "app/src/main/resources/static/assets/css/**/*.css" || true
+
+      - name: Lint JavaScript
+        run: eslint "app/src/main/resources/static/js/**/*.js" || true
