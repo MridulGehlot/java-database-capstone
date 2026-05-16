@@ -1,4 +1,4 @@
-package com.project.back_end.repository;
+package com.project.back_end.repo;
 
 import org.springframework.stereotype.Repository;
 import com.project.back_end.models.Appointment;

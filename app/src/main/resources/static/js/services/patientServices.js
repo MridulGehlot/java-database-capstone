@@ -47,10 +47,10 @@ export async function getPatientData(token) {
     const response = await fetch(`${PATIENT_API}/${token}`);
     const data = await response.json();
     if (response.ok) return data.patient;
-    return null;
+    return {};
   } catch (error) {
     console.error("Error fetching patient details:", error);
-    return null;
+    return {};
   }
 }
 
@@ -63,11 +63,11 @@ export async function getPatientAppointments(id, token, user) {
     if (response.ok) {
       return data.appointments;
     }
-    return null;
+    return [];
   }
   catch (error) {
     console.error("Error fetching patient details:", error);
-    return null;
+    return [];
   }
 }
 
